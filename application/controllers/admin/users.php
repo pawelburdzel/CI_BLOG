@@ -35,7 +35,7 @@ class Users extends CI_Controller {
 				
 				if ($this->form_validation->run('users_create') == True)
 				{	
-				//jeśli walidacja nie zadziałała
+				//jeśli walidacja zadziałała
 
 					$data = array(
 						'name' => $this->input->post('name'),
