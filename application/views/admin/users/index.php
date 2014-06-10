@@ -10,7 +10,10 @@
 	
 		<?php echo($row->email); ?>
 
+		
+
 		<?php echo anchor('admin/users/edit/' . $row->id, 'Edytuj'); ?>
+		<?php echo anchor('admin/users/delete/' . $row->id, 'Usuń', array('onclick' =>"return confirm ('Czy na pewno chcesz usunać uzytkownika?');")); ?>
 	
 		</br>
 		</br>

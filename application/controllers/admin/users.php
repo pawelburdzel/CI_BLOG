@@ -19,35 +19,10 @@ class Users extends CI_Controller {
 	{
 		//Jesli formularz zostanie przesłany
 		if(!empty($_POST))
-			{	
-				//ładowanie biblioteke
-				$this->load->library('form_validation');
+			{				
 
-				$config = array(
-				               array(
-				                     'field'   => 'name', 
-				                     'label'   => 'Imie', 
-				                     'rules'   => 'trim|required'
-				                  ),
-				               array(
-				                     'field'   => 'email', 
-				                     'label'   => 'Email', 
-				                     'rules'   => 'trim|required|valid_email|is_unique[users.email]'
-				                  ),
-				               array(
-				                     'field'   => 'password', 
-				                     'label'   => 'Hasło', 
-				                     'rules'   => 'trim|required|matches[passconf]'
-				                  ),   
-				               array(
-				                     'field'   => 'passconf', 
-				                     'label'   => 'Potwierdzenie hasła', 
-				                     'rules'   => 'trim|required'
-				                  )
-            );
-				$this->form_validation->set_rules($config);
-
-
+				
+				
 				$config = array(
 				    'required' => 'Pole %s jest wymagane',
 				    'valid_email' => 'Wpisałeś nie poprawny adres email',
@@ -58,7 +33,7 @@ class Users extends CI_Controller {
 				$this->form_validation->set_message($config);
 
 				
-				if ($this->form_validation->run() == True)
+				if ($this->form_validation->run('users_create') == True)
 				{	
 				//jeśli walidacja nie zadziałała
 
@@ -71,7 +46,7 @@ class Users extends CI_Controller {
 					$data['password'] = hash_salt($data['password']);
 
 					
-					$this->users_m->create($data); 
+					$this->users_m->create('users',$data); 
 
 					redirect('admin/users');
 				}
@@ -93,34 +68,8 @@ class Users extends CI_Controller {
 
 		if(!empty($_POST))
 			{	
-				//ładowanie biblioteke
-				$this->load->library('form_validation');
-
-				$config = array(
-				               array(
-				                     'field'   => 'name', 
-				                     'label'   => 'Imie', 
-				                     'rules'   => 'trim|required'
-				                  ),
-				               array(
-				                     'field'   => 'email', 
-				                     'label'   => 'Email', 
-				                     'rules'   => 'trim|required|valid_email|callback_unique_email'
-				                  ),
-				               array(
-				                     'field'   => 'password', 
-				                     'label'   => 'Hasło', 
-				                     'rules'   => 'trim|matches[passconf]'
-				                  ),   
-				               array(
-				                     'field'   => 'passconf', 
-				                     'label'   => 'Potwierdzenie hasła', 
-				                     'rules'   => 'trim'
-				                  )
-            );
-				$this->form_validation->set_rules($config);
-
-
+				
+				
 				$config = array(
 				    'required' => 'Pole %s jest wymagane',
 				    'valid_email' => 'Wpisałeś nie poprawny adres email',
@@ -131,7 +80,7 @@ class Users extends CI_Controller {
 				$this->form_validation->set_message($config);
 
 				
-				if ($this->form_validation->run() == True)
+				if ($this->form_validation->run('users_edit') == True)
 				{	
 				//jeśli walidacja nie zadziałała
 
@@ -148,23 +97,26 @@ class Users extends CI_Controller {
 						$data['password'] = $data['user']->password;
 					}
 
-					$this->users_m->update($id, $data);
+					$where = array('id' => $id);
+					$this->users_m->update('users', $where, $data);
 
 					redirect('admin/users');
 				}
-				
-
-
-				
+								
 		}
 			$this->load->view('admin/users/edit', $data);
 	}	
 
-	public function update($id, $data)
+	public function  delete($id)
 	{
-		$this->db->where('id', $id);
-		$this->db->update('users', $data);
-	}	
+
+		$id = $this->uri->segment(4);
+		$where = array('id' => $id);
+		$this->users_m->delete('users', $where);
+
+		redirect('admin/users');
+	}
+
 
 	 function _unique_email()
 	{
