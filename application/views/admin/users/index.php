@@ -1,3 +1,5 @@
+<?php include APPPATH . 'views/admin/include/header.php'; ?>
+<br>
 <h2> Lista użytkowników </h2>
 <?php echo anchor('admin/users/create', 'Dodaj użytkownika'); ?>
 <br><br>

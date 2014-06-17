@@ -1,3 +1,4 @@
+<?php include APPPATH . 'views/admin/include/header.php'; ?>
 <?php echo validation_errors(); ?>
 
 <?php echo form_open(); ?>

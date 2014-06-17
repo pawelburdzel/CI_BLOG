@@ -1,11 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Users extends CI_Controller {
+class Users extends MY_Controller {
 
+	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('admin/users_m');
+		$this->loggedin() == TRUE || redirect('admin/panel/login');
 	}
 
 	public function index()

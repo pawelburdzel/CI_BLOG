@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Panel extends CI_Controller {
+class Panel extends MY_Controller {
+	
 
 	public function __construct()
 	{
@@ -8,14 +9,19 @@ class Panel extends CI_Controller {
 		$this->load->model('admin/users_m');
 	}
 
-	public function index()
-	{
-		echo 'Panel Admina';
+	public function index() 
+	{	
+		$this->loggedin() == TRUE || redirect('admin/panel/login');
+
+		$data['loggedin'] = $this->loggedin();
+		$this->load->view('admin/panel/index', $data);
 	}
 
 	public function login()
 	{
-		$this->loggedin() == TRUE || redirect('admin/panel');
+		$data['loggedin'] = $this->loggedin();
+		$this->loggedin() == FALSE || redirect('admin/panel');
+		
 		if($_POST)
 		{
 			$config = array(
@@ -64,16 +70,7 @@ class Panel extends CI_Controller {
 		$this->load->view('admin/panel/login');
 	}
 
-	public function loggedin()
-	{
-		return !$this->session->userdata('loggedin');
-	}
-
-	public function logout()
-	{
-		$this->session->sess_destroy();
-		echo 'wylogowany';
-	}
+	
 }
 
 /* End of file panel.php */

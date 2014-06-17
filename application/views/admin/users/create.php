@@ -1,5 +1,7 @@
+<?php include APPPATH . 'views/admin/include/header.php'; ?>
+<br>
 <?php echo anchor('admin/users', 'Lista użytkowników'); ?>
-<br><br><br>
+<br>
 
 <?php echo validation_errors(); ?>
 
